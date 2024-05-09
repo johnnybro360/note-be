@@ -21,4 +21,9 @@ export class AuthController {
   async signOut(@Req() req: Request, @Res() res: Response) {
     return this.authService.logOut(req, res);
   }
+
+  @Post("verify-token")
+  async verifyToken(@Body() { token }: { token: string }, @Res() res: Response) {
+    return await this.authService.verifyToken(token, res);
+  }
 }

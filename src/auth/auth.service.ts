@@ -62,7 +62,7 @@ export class AuthService {
 
         res.cookie('token', token)
 
-        return res.send({message: 'Logged in successfully'});
+        return res.send({message: 'Logged in successfully', token});
     }
 
     async logOut(req: Request, res: Response) {
@@ -83,5 +83,27 @@ export class AuthService {
         return await this.jwt.signAsync(args, {
             secret: jwtSecret,
         });
+    }
+
+
+    async verifyToken(token: string, res: Response) {
+        try {
+            const decoded = await this.jwt.verify(token, {
+                secret: jwtSecret
+            });
+            console.log("Decoded JWT:", decoded);
+            if (decoded) {
+                console.log("Decoded JWT:", decoded);
+                // Verification successful, user is authenticated
+                return res.send({ message: "Valid JWT" });
+            } else {
+                // Invalid or expired JWT
+                return res.status(401).json({ message: "Invalid JWT" });
+            }
+        } catch (error) {
+            // Handle errors (e.g., invalid token format)
+            console.error("Error verifying JWT:", error);
+            return res.status(500).json({ message: "Internal server error" });
+        }
     }
 }
