@@ -28,8 +28,4 @@ export class AuthController {
     return await this.authService.verifyToken(token, res);
   }
 
-  @Post("verify-token")
-  async verifyToken(@Body() { token }: { token: string }, @Res() res: Response) {
-    return await this.authService.verifyToken(token, res);
-  }
 }
